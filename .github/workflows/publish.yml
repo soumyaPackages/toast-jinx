@@ -30,7 +30,7 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      # Uncomment and adjust these steps according to your project setup
+      # Uncomment the following lines if you have linting and tests configured
       # - name: Run Linter
       #   run: npm run lint
       # - name: Run Tests
