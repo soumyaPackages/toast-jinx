@@ -1,4 +1,5 @@
-name: Publish Toast-Jinx Package to  Github Packages
+name: Publish Toast-Jinx Package to GitHub Packages
+
 on:
   push:
     branches:
@@ -29,7 +30,7 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      # Uncomment these if you have linting and tests set up
+      # Uncomment and adjust these steps according to your project setup
       # - name: Run Linter
       #   run: npm run lint
       # - name: Run Tests
@@ -50,7 +51,7 @@ jobs:
           BUMP_TYPE=$(git log -1 --pretty=%B | grep -iE 'breaking change|major' &&
           git log -1 --pretty=%B | grep -iE 'feature|minor' && echo 'minor' ||
           echo 'patch')
-          echo "bump_type=$BUMP_TYPE" >> $GITHUB_OUTPUT
+          echo "bump_type=$BUMP_TYPE" >> $GITHUB_ENV
 
       - name: Bump Version
         run: npm version ${{ steps.version.outputs.bump_type }}
@@ -59,4 +60,4 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.ACCESS_TOKEN }} # Ensure this secret is correctly set in GitHub
