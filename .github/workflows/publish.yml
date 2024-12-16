@@ -60,4 +60,4 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.ACCESS_TOKEN }} # Ensure this secret is correctly set in GitHub
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_SECERT_TOKEN }}
