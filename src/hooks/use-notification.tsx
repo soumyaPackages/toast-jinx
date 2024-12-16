@@ -3,8 +3,6 @@ import { useNotificationProps, NotificationProps } from "../types";
 import type { useNotification } from "../types";
 import Notification from "../components/Notification";
 
-import { v4 as uuidv4 } from "uuid";
-
 const useNotification = ({
   position = "bottom-right",
   maxQueueLength = 5,
@@ -23,7 +21,7 @@ const useNotification = ({
         type?: NotificationProps["type"];
       }
     ) => {
-      const id = uuidv4(); // Generates a string, satisfying the { id: string } requirement
+      const id = Math.random().toString(36).substring(2, 15);
       const onClose = () => removeNotification(id);
 
       // Set timeout to automatically remove the notification

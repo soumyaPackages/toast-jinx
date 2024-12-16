@@ -17,7 +17,7 @@ export default defineConfig({
       formats: ['es']
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'react-icons', 'uuid'],
+      external: ['react', 'react-dom', 'react-icons'],
       output: {
         globals: {
           react: 'React',
