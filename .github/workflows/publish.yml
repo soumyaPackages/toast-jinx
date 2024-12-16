@@ -1,0 +1,62 @@
+name: Publish Toast-Jinx Package to  Github Packages
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test-and-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://npm.pkg.github.com/"
+          scope: "@soumyaPackages"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      # Uncomment these if you have linting and tests set up
+      # - name: Run Linter
+      #   run: npm run lint
+      # - name: Run Tests
+      #   run: npm test
+
+      - name: Build Package
+        run: npm run build
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "soumyahembra123@gmail.com"
+          git config --global user.name "CHEPHYTY"
+
+      - name: Determine Version Bump
+        id: version
+        run: |
+          # Simplified version bump detection
+          BUMP_TYPE=$(git log -1 --pretty=%B | grep -iE 'breaking change|major' &&
+          git log -1 --pretty=%B | grep -iE 'feature|minor' && echo 'minor' ||
+          echo 'patch')
+          echo "bump_type=$BUMP_TYPE" >> $GITHUB_OUTPUT
+
+      - name: Bump Version
+        run: npm version ${{ steps.version.outputs.bump_type }}
+
+      - name: Publish Package
+        if: github.ref == 'refs/heads/main'
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
