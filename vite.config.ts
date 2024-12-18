@@ -24,7 +24,7 @@ export default defineConfig({
           'react-dom': 'ReactDOM'
         },
         assetFileNames: (assetInfo) => {
-          if (assetInfo.name === 'style.css') return 'index.css';
+          if (assetInfo.name === 'style.css') return 'style.css';
           return `assets/[name][extname]`;
         }
       }
